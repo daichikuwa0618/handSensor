@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 #!/usr/bin/env python
 
+# Created Daichi Hayashi 2017/09/19
+# From Yonago Institute of Technology
+# Copyright ©️ 2017 Daichi Hayashi. All rights reserved.
+
 # move 3 fingers following to proximity sensors
 # this might be main program
 
@@ -12,21 +16,21 @@ from time import sleep
 adc = MCP3208(channel = 0)
 pwm = pigpio.pi()
 
-# ========== 定数 ==========
+# ========== constants ==========
 FING1_PIN    = 15
 FING2_PIN    = 18
 FING3_PIN    = 23
 JOINT_PIN    = 24
-# 近接センサの閾値
+# Threshold of Proximity sensor
 GET_OBJECT   = 0.8
 NEAR_OBJECT  = 0.3
 TOUCH_OBJECT = 0.1
-# 分割速度
+# speed of servoMotor
 MAX_SPEED = 1.0
 MID_SPEED = 0.5
 MIN_SPEED = 0.1
 
-# ========== 変数 ==========
+# ========== variables ==========
 command   = 0 # 0:OPEN, 1:CLOSE
 state     = 0 # distance between fing to object
 microSec1 = 0.0 # servo usec
@@ -58,12 +62,20 @@ try:
 
         # OPEN
         if command == 0:
+            print("opening fingers")
             ''' Need speed control method in this area too '''
             moveServo(FING1_PIN, 0.0)
+            moveServo(FING2_PIN, 0.0)
+            moveServo(FING3_PIN, 0.0)
 
         # CLOSE
+        elif command == 1:
+            print("closing fingers")
+
+        # Typed fail command
         else:
-            
+            print("Type '0'or'1'")
+
 
 except KeyboardInterrupt:
 elif:

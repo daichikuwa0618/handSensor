@@ -21,6 +21,10 @@ JOINT_PIN    = 24
 GET_OBJECT   = 0.8
 NEAR_OBJECT  = 0.3
 TOUCH_OBJECT = 0.1
+# 分割速度
+MAX_SPEED = 1.0
+MID_SPEED = 0.5
+MIN_SPEED = 0.1
 
 # ========== 変数 ==========
 command   = 0 # 0:OPEN, 1:CLOSE
@@ -34,8 +38,10 @@ degree3   = 0.0
 
 # ========== Function moving servoMotor ==========
 def moveServo(pin, degree):
-    usec = 1500.0 + (degree * 10.0)
-    pi.set_servo_pulsewidth(pin, usec)
+    # servoMotor cannot move over 60[deg] and under -60[deg]
+    if degree <= 60.0 and degree >= -60.0:
+        usec = 1500.0 + (degree * 10.0)
+        pi.set_servo_pulsewidth(pin, usec)
 
 # ========== initialize ==========
 # set to 0[deg] all servoMotor
@@ -46,7 +52,21 @@ moveServo(JOINT_PIN, 0)
 
 # ========== main ==========
 try:
+    while True:
+        # command input
+        command = int(input("Type '0':OPEN, '1':CLOSE ...:"))
+
+        # OPEN
+        if command == 0:
+            ''' Need speed control method in this area too '''
+            moveServo(FING1_PIN, 0.0)
+
+        # CLOSE
+        else:
+            
+
 except KeyboardInterrupt:
+elif:
     pass
 
 # ========== destroy ==========

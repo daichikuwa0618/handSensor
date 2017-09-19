@@ -60,8 +60,11 @@ def cmdServo(adcChannel, degree, state):
     # store in tuple
     adcTuple = (adc0.value, adc1.value, adc2.value)
 
-    # close to object
+    # touch to object
     if adcTuple[adcChannel] <= TOUCH_OBJECT:
+        state = 3
+    # close to object
+    elif adcTuple[adcChannel] <= CLOSE_OBJECT:
         degree -= MIN_SPEED
         state = 2
     # mid distance to object
@@ -88,7 +91,7 @@ try:
         # command input
         command = int(input("Type '0':OPEN, '1':CLOSE ...:"))
 
-        # OPEN
+        # OPEN command
         if command == 0:
             print("opening fingers")
             ''' Need speed control method in this area too '''
@@ -96,9 +99,10 @@ try:
             moveServo(FING2_PIN, 0.0)
             moveServo(FING3_PIN, 0.0)
 
-        # CLOSE
+        # CLOSE command
         elif command == 1:
             print("closing fingers")
+            # until ALL fingers touch to object
             while (stateFing1 not 3) or (stateFing2 not 3) or (stateFing3 not 3):
                 # USAGE: cmdServo(channel of ADC, degree, state)
                 degree1, stateFing1 = cmdServo(0, degree1, stateFing1)
@@ -108,10 +112,9 @@ try:
                 moveServo(FING2_PIN, degree2)
                 moveServo(FING3_PIN, degree3)
 
-        # Typed fail command
+        # Typed wrong command
         else:
             print("Type '0'or'1'")
-
 
 except KeyboardInterrupt:
 elif:

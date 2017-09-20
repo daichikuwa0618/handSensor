@@ -39,10 +39,7 @@ stateFing1 = 0 # distance between fing to object
 stateFing2 = 0 # state assignments 0:far 1:mid 2:close
 stateFing3 = 0 # 0:far 1:mid 2:close
 
-microSec1  = 0.0 # servo usec
-microSec2  = 0.0
-microSec3  = 0.0
-degree1    = 0.0 # servo angle
+degree1    = 0.0 # servo angle for each servoMotors
 degree2    = 0.0
 degree3    = 0.0
 
@@ -57,23 +54,23 @@ def moveServo(pin, degree):
 # ========== Function commanding servoMotor ==========
 def cmdServo(adcChannel, degree, state):
     # store in tuple
-    adcTuple = (adc0.value, adc1.value, adc2.value)
+    adcList = [adc0.value, adc1.value, adc2.value]
 
     # touch to object
-    if adcTuple[adcChannel] <= TOUCH_OBJECT:
+    if adcList[adcChannel] <= TOUCH_OBJECT:
         # change state and show message in first change
         if state not 3:
             state = 3
             print("Finger" + str(adcChannel + 1) + "has been changed to state1")
     # close to object
-    elif adcTuple[adcChannel] <= CLOSE_OBJECT:
+    elif adcList[adcChannel] <= CLOSE_OBJECT:
         degree -= MIN_SPEED
         # change state and show message in first change
         if state not 2:
             state = 2
             print("Finger" + str(adcChannel + 1) + "has been changed to state1")
     # mid distance to object
-    elif adcTuple[adcChannel] <= NEAR_OBJECT:
+    elif adcList[adcChannel] <= NEAR_OBJECT:
         degree -= MID_SPEED
         # change state and show message in first change
         if state not 1:
@@ -127,7 +124,6 @@ try:
             print("Error command typed...")
 
 except KeyboardInterrupt:
-elif:
     pass
 
 # ========== destroy ==========

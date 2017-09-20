@@ -16,7 +16,6 @@ from time import sleep
 adc0 = MCP3208(channel = 0)
 adc1 = MCP3208(channel = 1)
 adc2 = MCP3208(channel = 2)
-adc3 = MCP3208(channel = 3)
 pwm = pigpio.pi()
 
 # ========== constants ==========
@@ -62,15 +61,24 @@ def cmdServo(adcChannel, degree, state):
 
     # touch to object
     if adcTuple[adcChannel] <= TOUCH_OBJECT:
-        state = 3
+        # change state and show message in first change
+        if state not 3:
+            state = 3
+            print("Finger" + str(adcChannel + 1) + "has been changed to state1")
     # close to object
     elif adcTuple[adcChannel] <= CLOSE_OBJECT:
         degree -= MIN_SPEED
-        state = 2
+        # change state and show message in first change
+        if state not 2:
+            state = 2
+            print("Finger" + str(adcChannel + 1) + "has been changed to state1")
     # mid distance to object
     elif adcTuple[adcChannel] <= NEAR_OBJECT:
         degree -= MID_SPEED
-        state = 1
+        # change state and show message in first change
+        if state not 1:
+            state = 1
+            print("Finger" + str(adcChannel + 1) + "has been changed to state1")
     # far from object
     else:
         degree -= MAX_SPEED
@@ -87,6 +95,7 @@ moveServo(JOINT_PIN, 0)
 
 # ========== main ==========
 try:
+    # Loop for infinite
     while True:
         # command input
         command = int(input("Type '0':OPEN, '1':CLOSE ...:"))
@@ -108,13 +117,14 @@ try:
                 degree1, stateFing1 = cmdServo(0, degree1, stateFing1)
                 degree2, stateFing2 = cmdServo(1, degree2, stateFing2)
                 degree3, stateFing3 = cmdServo(2, degree3, stateFing3)
+                # move servoMotors according to angle value of cmdServo
                 moveServo(FING1_PIN, degree1)
                 moveServo(FING2_PIN, degree2)
                 moveServo(FING3_PIN, degree3)
 
         # Typed wrong command
         else:
-            print("Type '0'or'1'")
+            print("Error command typed...")
 
 except KeyboardInterrupt:
 elif:

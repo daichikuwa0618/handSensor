@@ -13,17 +13,17 @@ import pigpio
 from gpiozero import MCP3208
 import time
 
-adc0 = MCP3208(channel = 0)
+adc0 = MCP3208(channel = 1)
 
 pwm = pigpio.pi()
 
 # ========== constants ==========
-fing0Pin    = 15
+fing0Pin    = 18
 # Threshold of Proximity sensor
-GET_OBJECT   = 0.7
-NEAR_OBJECT  = 0.5
-CLOSE_OBJECT = 0.2
-TOUCH_OBJECT = 0.05
+GET_OBJECT   = 0.93
+NEAR_OBJECT  = 0.8
+CLOSE_OBJECT = 0.7
+TOUCH_OBJECT = 0.6
 # speed of servoMotor[deg]
 MAX_DEG = 2.0
 MID_DEG = 1.0
@@ -46,8 +46,6 @@ def moveServo(pin, degree):
 def cmdServo(adcChannel, degree, state):
     # store in tuple
     adcList = [adc0.value]
-
-    adcList[adcChannel] = float(input("value:"))
 
     # touch to object
     if adcList[adcChannel] <= TOUCH_OBJECT:

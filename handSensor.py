@@ -11,7 +11,7 @@
 # ========== import ==========
 import pigpio
 from gpiozero import MCP3208
-from time import sleep
+import time
 
 adc0 = MCP3208(channel = 0)
 adc1 = MCP3208(channel = 1)
@@ -25,10 +25,10 @@ fing1Pin    = 18
 fing2Pin    = 23
 jointPin    = 24
 # Threshold of Proximity sensor
-GET_OBJECT   = 0.7
-NEAR_OBJECT  = 0.5
-CLOSE_OBJECT = 0.2
-TOUCH_OBJECT = 0.05
+GET_OBJECT   = 0.9
+NEAR_OBJECT  = 0.8
+CLOSE_OBJECT = 0.7
+TOUCH_OBJECT = 0.65
 # speed of servoMotor[deg]
 MAX_DEG = 2.0
 MID_DEG = 1.0
@@ -64,21 +64,30 @@ def cmdServo(adcChannel, degree, state):
             print("Finger" + str(adcChannel) + "has been changed to state3")
     # close to object
     elif adcList[adcChannel] <= CLOSE_OBJECT:
-        degree -= MIN_DEG
+        if adcChannel == 1:
+            degree -= MIN_DEG
+        else:
+            degree += MIN_DEG
         # change state and show message in first change
         if state != 2:
             state = 2
             print("Finger" + str(adcChannel) + "has been changed to state2")
     # mid distance to object
     elif adcList[adcChannel] <= NEAR_OBJECT:
-        degree -= MID_DEG
+        if adcChannel == 1:
+            degree -= MID_DEG
+        else:
+            degree += MID_DEG
         # change state and show message in first change
         if state != 1:
             state = 1
             print("Finger" + str(adcChannel) + "has been changed to state1")
     # far from object
     else:
-        degree -= MAX_DEG
+        if adcChannel == 1:
+            degree -= MAX_DEG
+        else:
+            degree += MAX_DEG
         state = 0
 
     return degree, state

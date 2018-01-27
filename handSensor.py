@@ -25,10 +25,10 @@ fing1Pin    = 18
 fing2Pin    = 23
 jointPin    = 24
 # Threshold of Proximity sensor
-GET_OBJECT   = 0.9
-NEAR_OBJECT  = 0.8
-CLOSE_OBJECT = 0.7
-TOUCH_OBJECT = 0.65
+GET_OBJECT   = 0.8
+NEAR_OBJECT  = 0.5
+CLOSE_OBJECT = 0.3
+TOUCH_OBJECT = 0.1
 # speed of servoMotor[deg]
 MAX_DEG = 2.0
 MID_DEG = 1.0
@@ -112,6 +112,12 @@ if __name__ == '__main__':
                 moveServo(fing0Pin, 0.0)
                 moveServo(fing1Pin, 0.0)
                 moveServo(fing2Pin, 0.0)
+                stateFing0 = 0
+                stateFing1 = 0
+                stateFing2 = 0
+                degree0 = 0
+                degree1 = 0
+                degree2 = 0
 
             # CLOSE command
             elif command == 1:
